@@ -1,0 +1,12 @@
+.profile__info {
+    max-width: 336px;
+    color: #ffffff;
+    margin-right: auto;
+    display: grid;
+    grid-template-columns: 1fr 24px;
+    column-gap: 18px;
+    row-gap: 16px;
+    grid-template-areas: 
+    "name button"
+    "desc .";
+}

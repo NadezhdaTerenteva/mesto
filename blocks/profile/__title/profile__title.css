@@ -1,0 +1,4 @@
+.profile__title {
+    grid-area: name;
+    margin: 0;
+}

@@ -1,15 +1,9 @@
 .footer__copyright {
     display: block;
     font-weight: normal;
-    font-size: 14px;
-    line-height: 16px;
-    color: #fff;
+    font-size: 18px;
+    line-height: 22px;
+    color: #545454;
     margin: 0;
   }
   
-  @media screen and (max-width: 740px) {
-    .footer__copyright {
-    line-height: 16px;
-    padding-top: 16px;
-    }
-  }

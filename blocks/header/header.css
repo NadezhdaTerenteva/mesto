@@ -6,16 +6,12 @@
     align-items: flex-start;
     margin: 45px 0 0;
     border-bottom: 1px solid #545454;
+    overflow: visible;
   }
   
-  @media screen and (max-width: 990px) {
-    .header {
-    padding: 28px 24px 0;
-    }
+@media screen and (max-width: 375px) {
+  .header {
+    height: 56px;
+    margin: 28px 0 0;
   }
-
-  @media screen and (max-width: 520px) {
-    .header {
-    padding: 16px 16px 0;
-    }
-  }
+}

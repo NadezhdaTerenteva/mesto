@@ -1,3 +1,13 @@
 .photo-grid__item-like-icon_active {
-    
+	width: 22px;
+  height: 19px;
+  margin-right: 20px;
+  border: 1px solid #ffffff; 
+  box-sizing: border-box;
+  fill: #000000;
+  padding: 0;
+  background-image: url(../../../../images/like-icon_active.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
 }

@@ -1,13 +1,18 @@
 .photo-grid__item-like-icon {
-    width: 22px;
-    height: 19px;
-    margin-right: 20px;
-    border: 1px solid #ffffff; 
-    box-sizing: border-box;
-    fill: #000000;
-    padding: 0;
-    background-image: url(../../../images/like.svg);
-    background-position: center;
-    background-size: cover;
-    background-repeat: no-repeat;
+  width: 22px;
+  height: 19px;
+  margin-right: 20px;
+  border: 1px solid #ffffff; 
+  box-sizing: border-box;
+  fill: #000000;
+  padding: 0;
+  background-image: url(../../../images/like.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.photo-grid__item-like-icon:hover {
+	opacity: 0.5;
+	cursor: pointer;
 }

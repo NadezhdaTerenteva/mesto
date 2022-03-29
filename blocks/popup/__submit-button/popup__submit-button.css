@@ -4,6 +4,7 @@
   box-sizing: border-box;
   padding: 0;
   border: none;
+  border-radius: 2px;
   background-color: #000000;
   font-family: 'Inter';
   font-style: normal;
@@ -12,4 +13,18 @@
   line-height: 22px;
   text-align: center;
   color: #FFFFFF;
+}
+
+.popup__submit-button:hover {
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 470px) {
+  .popup__submit-button {
+    width: 100%;
+    height: 46px;
+    font-size: 14px;
+    line-height: 17px;
+  }
 }

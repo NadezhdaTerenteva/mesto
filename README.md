@@ -1,6 +1,6 @@
 # Mesto
 
-Find online version under the [link](https://nadezhdaterenteva.github.io/russian-travel/)  
+Find online version under the [link](https://nadezhdaterenteva.github.io/mesto/)  
 This is a learning project  - one page website created according the brief from [Яндекс.Практикум](https://www.practicum.yandex.ru).  
 Main technologies used are **HTML5, CSS, JS** including extended features such as *flex-, grid-layouts*.
 There is also an interactive part, namely the possibility to edit user's profile and save data is realised on JS.

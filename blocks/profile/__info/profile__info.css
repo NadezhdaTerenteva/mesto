@@ -1,24 +1,24 @@
 .profile__info {
-    max-width: 336px;
-    color: #ffffff;
-    display: grid;
-    grid-template-columns: 1fr 24px;
-    column-gap: 18px;
-    row-gap: 16px;
-    grid-template-areas: 
-    "name button"
-    "desc .";
+  max-width: 336px;
+  color: #ffffff;
+  display: grid;
+  grid-template-columns: 1fr 24px;
+  column-gap: 18px;
+  row-gap: 16px;
+  grid-template-areas: 
+  "name button"
+  "desc .";
 }
 
 @media screen and (max-width: 700px) {
-    .profile__info {
-        margin: 26px auto 36px;
-    }
+  .profile__info {
+    margin: 26px auto 36px;
+  }
 }
 
 @media screen and (max-width: 375px) {
-    .profile__info {
+  .profile__info {
     column-gap: 14px;
     row-gap: 10px;
-    }
+  }
 }

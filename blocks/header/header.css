@@ -1,13 +1,13 @@
 .header {
-    width: 100%;
-    max-width: 880px;
-    height: 74px;
-    display: flex;
-    align-items: flex-start;
-    margin: 45px 0 0;
-    border-bottom: 1px solid #545454;
-    overflow: visible;
-  }
+  width: 100%;
+  max-width: 880px;
+  height: 74px;
+  display: flex;
+  align-items: flex-start;
+  margin: 45px 0 0;
+  border-bottom: 1px solid #545454;
+  overflow: visible;
+}
   
 @media screen and (max-width: 375px) {
   .header {

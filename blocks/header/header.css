@@ -8,7 +8,7 @@
   border-bottom: 1px solid #545454;
   overflow: visible;
 }
-  
+
 @media screen and (max-width: 375px) {
   .header {
     height: 56px;

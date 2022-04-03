@@ -7,7 +7,7 @@
   box-sizing: border-box;
   padding: 0;
   justify-self: flex-end;
-  background-color: #000000;
+  background-color: transparent;
   background-image: url(../../../images/plus.svg);
   background-position: center;
   background-repeat: no-repeat;
@@ -28,5 +28,6 @@
 @media screen and (max-width: 375px) {
   .profile__add-button {
     width: 100%;
+    background-image: url(../../../images/plus_320.svg);
   }
 }

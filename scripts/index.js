@@ -14,6 +14,8 @@ const profileSubTitle = document.querySelector('.profile__subtitle');
 }*/
 
 function openPopup() {
+  nameInput.value = profileTitle.textContent;
+  jobInput.value = profileSubTitle.textContent;
 	popup.classList.add('popup_opened');
 }
 

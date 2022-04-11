@@ -1,0 +1,20 @@
+.photo-grid__remove-button {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 18px;
+  height: 19px;
+  box-sizing: border-box;
+  border: none;
+  padding: 0;
+  background-color: transparent;
+  background-image: url(../../../images/Trash.svg);
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+
+.photo-grid__remove-button:hover {
+  opacity: 0.6;
+  cursor: pointer;
+}

@@ -1,0 +1,12 @@
+.popup__photo-preview {
+  position: relative;
+  width: 816px;
+  max-width: 75vw;
+  max-height: 75vh;
+}
+
+@media screen and (max-width: 470px) {
+  .popup__photo-preview {
+    width: 240px;
+  }
+}

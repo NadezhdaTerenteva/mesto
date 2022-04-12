@@ -72,7 +72,7 @@ function formSubmitHandler(evt) {
 	profileTitle.textContent = nameInput.value;
 	profileSubTitle.textContent = jobInput.value;
 
-	closePopup();
+	closePopup(getParentPopup(evt.target));
 }
 
 editButton.addEventListener('click', openPopupProfile);

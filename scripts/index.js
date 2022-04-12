@@ -6,19 +6,33 @@ const popupPlace = document.getElementById('popup-place');
 const popupCloseButtons = document.getElementsByClassName('popup__close-button');
 const addButton = document.querySelector('.profile__add-button');
 
+const likeButtons = document.getElementsByClassName('photo-grid__item-like-icon');
+
 
 const formElement = document.querySelector('.popup__form');
 const nameInput = formElement.querySelector('#name');
 const jobInput = formElement.querySelector('#job');
 
-
+const placeInput = formElement.querySelector('#place');
+const linkInput = formElement.querySelector('#link');
 
 const profileTitle = document.querySelector('.profile__title');
 const profileSubTitle = document.querySelector('.profile__subtitle');
 
-/*function togglePopup() {
-	popup.classList.toggle('popup_opened');
-}*/
+const imageTitle = document.getElementsByClassName('photo-grid__item-name');
+const imageLink = document.getElementsByClassName('photo-grid__item-img');
+
+// function likeImage() {
+//   [...likeButtons].forEach(function(like) {
+//     like.classList.toggle('photo-grid__item-like-icon_active');
+//     });
+
+//   };
+
+  //likeButtons.classList.toggle('photo-grid__item-like-icon_active');
+function likeImage(evt) {
+  evt.target.classList.toggle('photo-grid__item-like-icon_active');
+}
 
 function showPopup(popup) {
   popup.classList.add('popup_opened');
@@ -63,13 +77,17 @@ function formSubmitHandler(evt) {
 
 editButton.addEventListener('click', openPopupProfile);
 addButton.addEventListener('click', openPopupPlace);
-// popupCloseButton.addEventListener('click', () => closePopup(popupProfile));
+
+[...likeButtons].forEach(function(like) {
+
+  like.addEventListener('click',likeImage)
+});
 
 
 
 formElement.addEventListener('submit', formSubmitHandler);
 
-//Находит родитетльский попап
+//Находит родительский попап
 function getParentPopup(node) {
   const popup = node.closest('.popup');
   return popup;

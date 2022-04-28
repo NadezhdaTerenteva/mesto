@@ -30,6 +30,7 @@ const template = document.querySelector(".card__item");
 
 const buttonEdit = document.querySelector(".profile__edit-button");
 
+const popups = document.querySelectorAll(".popup");
 const popupProfile = document.getElementById("popup-profile");
 const popupPlace = document.getElementById("popup-place");
 const popupPreview = document.getElementById("popup-preview");
@@ -108,7 +109,15 @@ function likeImage(evt) {
 
 function showPopup(popup) {
   popup.classList.add("popup_opened");
+
+  document.addEventListener('keydown', (evt) => {
+
+    if (evt.key === 'Escape') {
+      closePopup(popup);
+    }
+  })
 }
+
 
 function openPopupProfile() {
   nameInput.value = profileTitle.textContent;
@@ -137,15 +146,19 @@ function getParentPopup(node) {
 [...popupCloseButtons].forEach(function (btn) {
   btn.addEventListener("click", function () {
     const parentPopup = getParentPopup(btn);
-
-    // const inputs = parentPopup.getElementsByClassName('popup__input');
-    // [...inputs].forEach(function(input){
-    //   input.value = "";
-    // });
-
     closePopup(parentPopup);
   });
 });
+
+[...popups].forEach(function (popup) {
+  popup.addEventListener("click", function (event) {
+    const parentPopup = getParentPopup(popup);
+    if(event.target === event.currentTarget) {
+      closePopup(parentPopup);
+    }
+  });
+});
+
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
@@ -165,3 +178,5 @@ buttonAdd.addEventListener("click", openPopupPlace);
 
 formUserElement.addEventListener("submit", formSubmitHandler);
 formPlaceElement.addEventListener("submit", handleAddCard);
+
+

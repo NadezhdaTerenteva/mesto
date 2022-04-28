@@ -1,0 +1,18 @@
+.popup__error-visible {
+  display: block;
+  position: absolute;
+  top: 32px;
+  left: 0;
+  width: 100%;
+  font-family: inherit;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 15px;
+  color: #FF0000;
+  border: none;
+}
+
+.popup__error-visible:last-of-type {
+  top: 85px;
+}

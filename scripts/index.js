@@ -150,6 +150,7 @@ function getParentPopup(node) {
   });
 });
 
+//Закрытие кликом на оверлей
 [...popups].forEach(function (popup) {
   popup.addEventListener("click", function (event) {
     const parentPopup = getParentPopup(popup);

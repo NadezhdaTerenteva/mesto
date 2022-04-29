@@ -35,9 +35,9 @@ const popupProfile = document.getElementById("popup-profile");
 const popupPlace = document.getElementById("popup-place");
 const popupPreview = document.getElementById("popup-preview");
 
-const popupCloseButtons = document.getElementsByClassName(
-  "popup__close-button"
-);
+// const popupCloseButtons = document.getElementsByClassName(
+//   "popup__close-button"
+// );
 const buttonAdd = document.querySelector(".profile__add-button");
 
 const formUserElement = document.querySelector("#user-data-form");
@@ -52,9 +52,7 @@ const linkInput = formPlaceElement.querySelector("#link");
 const profileTitle = document.querySelector(".profile__title");
 const profileSubTitle = document.querySelector(".profile__subtitle");
 
-const imagePreviewTitle = popupPreview.querySelector(
-  ".popup__photo-preview-title"
-);
+const imagePreviewTitle = popupPreview.querySelector(".popup__photo-preview-title");
 const imagePreview = popupPreview.querySelector(".popup__photo-preview-img");
 
 function render() {
@@ -82,7 +80,7 @@ function createCard(item) {
   return newItem;
 }
 
-function handleAddCard(evt) {
+function handleAddCard(evt, btn) {
   evt.preventDefault();
 
   const newPlace = {
@@ -93,7 +91,12 @@ function handleAddCard(evt) {
   const newNode = createCard(newPlace);
   listContainer.prepend(newNode);
 
-  closePopup(getParentPopup(evt.target));
+  const button = popupPlace.querySelector(".popup__submit-button");
+
+  evt.target.reset();
+  button.classList.add("popup__submit-button_disabled");
+
+  closePopup(popupPlace);
 }
 
 render();
@@ -132,7 +135,7 @@ function openPopupPlace() {
 function openPopupPreview(item) {
   imagePreviewTitle.textContent = item.name;
   imagePreview.src = item.link;
-  item.alt = item.name;
+  imagePreview.alt = item.name;
   showPopup(popupPreview);
 }
 
@@ -143,41 +146,51 @@ function getParentPopup(node) {
 }
 
 //Распаковывает массив без присвоения переменной
-[...popupCloseButtons].forEach(function (btn) {
-  btn.addEventListener("click", function () {
-    const parentPopup = getParentPopup(btn);
-    closePopup(parentPopup);
-  });
-});
+// [...popupCloseButtons].forEach(function (btn) {
+//   btn.addEventListener("click", function () {
+//     const parentPopup = getParentPopup(btn);
+//     closePopup(parentPopup);
+//   });
+// });
 
 //Закрытие кликом на оверлей
-[...popups].forEach(function (popup) {
-  popup.addEventListener("click", function (event) {
-    const parentPopup = getParentPopup(popup);
-    if(event.target === event.currentTarget) {
-      closePopup(parentPopup);
-    }
-  });
-});
+// [...popups].forEach(function (popup) {
+//   popup.addEventListener("click", function (event) {
+//     if(event.target === event.currentTarget) {
+//       closePopup(popup);
+//     }
+//   });
+// });
 
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
 }
 
-function formSubmitHandler(evt) {
+  popups.forEach((popup) => {
+    popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_opened')) {
+        closePopup(popup)
+      }
+      if (evt.target.classList.contains('popup__close-button')) {
+        closePopup(popup)
+      }
+    })
+  })
+
+function handleProfileFormSubmit (evt) {
   evt.preventDefault();
 
   profileTitle.textContent = nameInput.value;
   profileSubTitle.textContent = jobInput.value;
 
-  closePopup(getParentPopup(evt.target));
+  closePopup(popupProfile);
 }
 
 buttonEdit.addEventListener("click", openPopupProfile);
 buttonAdd.addEventListener("click", openPopupPlace);
 
-formUserElement.addEventListener("submit", formSubmitHandler);
+formUserElement.addEventListener("submit", handleProfileFormSubmit);
 formPlaceElement.addEventListener("submit", handleAddCard);
 
 

@@ -18,7 +18,7 @@ function toggleButton(form, config) {
 }
 
 
-function enableValidation(pForm) {
+function setEventListeners(pForm) {
   const inputs = Array.from(pForm.querySelectorAll(config.inputSelector));
 
   inputs.forEach((element) => {
@@ -35,6 +35,9 @@ function handleFormInput(event, form, config) {
 
   if(input.validity.valid) {
     errorNode.textContent = '';
+    errorNode.classList.remove(config.errorClass);
+    input.classList.remove(config.inputErrorClass);
+
   } else {
     errorNode.textContent = input.validationMessage;
     errorNode.classList.add(config.errorClass);
@@ -44,14 +47,15 @@ function handleFormInput(event, form, config) {
   toggleButton(form, config);
 }
 
+function enableValidation() {
+  const forms = [...document.querySelectorAll(config.formSelector)];
+  forms.forEach(function(form) {
 
-const forms = [...document.querySelectorAll(config.formSelector)];
+    setEventListeners(form, config);
+  });
+}
 
-forms.forEach(function(form) {
-
-  enableValidation(form, config);
-
-})
+  enableValidation();
 
 //Проверка валидности формы
 // function handleFormSubmit(event, form) {
@@ -63,5 +67,5 @@ forms.forEach(function(form) {
 //     alert("From is valid")
 //   } else {
 //     alert("From is invalid");
-//   }
-// }
+//   });
+//

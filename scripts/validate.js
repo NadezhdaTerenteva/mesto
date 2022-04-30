@@ -18,7 +18,7 @@ function toggleButton(form, config) {
 }
 
 
-function setEventListeners(pForm) {
+function setEventListeners(pForm, config) {
   const inputs = Array.from(pForm.querySelectorAll(config.inputSelector));
 
   inputs.forEach((element) => {

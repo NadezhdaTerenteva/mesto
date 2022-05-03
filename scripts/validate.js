@@ -47,7 +47,7 @@ function handleFormInput(event, form, config) {
   toggleButton(form, config);
 }
 
-function enableValidation() {
+function enableValidation(config) {
   const forms = [...document.querySelectorAll(config.formSelector)];
   forms.forEach(function(form) {
 
@@ -55,7 +55,7 @@ function enableValidation() {
   });
 }
 
-  enableValidation();
+  enableValidation(config);
 
 //Проверка валидности формы
 // function handleFormSubmit(event, form) {

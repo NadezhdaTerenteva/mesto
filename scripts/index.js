@@ -35,9 +35,6 @@ const popupProfile = document.getElementById("popup-profile");
 const popupPlace = document.getElementById("popup-place");
 const popupPreview = document.getElementById("popup-preview");
 
-// const popupCloseButtons = document.getElementsByClassName(
-//   "popup__close-button"
-// );
 const buttonAdd = document.querySelector(".profile__add-button");
 
 const formUserElement = document.querySelector("#user-data-form");
@@ -94,6 +91,7 @@ function handleAddCard(evt, btn) {
   const button = popupPlace.querySelector(".popup__submit-button");
 
   evt.target.reset();
+  button.disabled = true;
   button.classList.add("popup__submit-button_disabled");
 
   closePopup(popupPlace);
@@ -112,15 +110,15 @@ function likeImage(evt) {
 
 function showPopup(popup) {
   popup.classList.add("popup_opened");
-
-  document.addEventListener('keydown', (evt) => {
-
-    if (evt.key === 'Escape') {
-      closePopup(popup);
-    }
-  })
+  document.addEventListener("keydown", closeByEscape);
 }
 
+function closeByEscape(evt) {
+  if (evt.key === 'Escape') {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  }
+}
 
 function openPopupProfile() {
   nameInput.value = profileTitle.textContent;
@@ -145,34 +143,18 @@ function getParentPopup(node) {
   return popup;
 }
 
-//Распаковывает массив без присвоения переменной
-// [...popupCloseButtons].forEach(function (btn) {
-//   btn.addEventListener("click", function () {
-//     const parentPopup = getParentPopup(btn);
-//     closePopup(parentPopup);
-//   });
-// });
-
-//Закрытие кликом на оверлей
-// [...popups].forEach(function (popup) {
-//   popup.addEventListener("click", function (event) {
-//     if(event.target === event.currentTarget) {
-//       closePopup(popup);
-//     }
-//   });
-// });
-
 
 function closePopup(popup) {
   popup.classList.remove("popup_opened");
+  document.removeEventListener("keydown", closeByEscape);
 }
 
   popups.forEach((popup) => {
-    popup.addEventListener('mousedown', (evt) => {
-      if (evt.target.classList.contains('popup_opened')) {
-        closePopup(popup)
+    popup.addEventListener("mousedown", (evt) => {
+      if (evt.target.classList.contains("popup_opened")) {
+        closePopup(popup) //overlay click
       }
-      if (evt.target.classList.contains('popup__close-button')) {
+      if (evt.target.classList.contains("popup__close-button")) {
         closePopup(popup)
       }
     })

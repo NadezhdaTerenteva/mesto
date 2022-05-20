@@ -1,9 +1,10 @@
 export default class Card {
-  constructor(name, link, template) {
+  constructor(name, link, template, openPopupPreview) {
     this._name = name;
     this._link = link;
     this._template = template;
     this._popupPreview = document.getElementById("popup-preview");
+    this._openPopupPreview = openPopupPreview;
   }
 
   _handleRemoveCard(evt) {
@@ -13,37 +14,6 @@ export default class Card {
 
   _likeImage(evt) {
     evt.target.classList.toggle("photo-grid__item-like-icon_active");
-  }
-
-  _openPopupPreview(item) {
-    const imagePreview = this._popupPreview.querySelector(
-      ".popup__photo-preview-img"
-    );
-    const imagePreviewTitle = this._popupPreview.querySelector(
-      ".popup__photo-preview-title"
-    );
-
-    imagePreviewTitle.textContent = this._item.name;
-    imagePreview.src = this._item.link;
-    imagePreview.alt = this._item.name;
-    this._showPopupPreview();
-  }
-
-  _showPopupPreview() {
-    this._popupPreview.classList.add("popup_opened");
-    document.addEventListener("keydown", (evt) => {
-      this._closeByEscape(evt);
-    });
-  }
-
-  _closeByEscape(evt) {
-    if (evt.code === "Escape") {
-      const openedPopup = document.querySelector(".popup_opened");
-      openedPopup.classList.remove("popup_opened");
-    }
-    document.removeEventListener("keydown", (evt) => {
-      this._closeByEscape(evt);
-    });
   }
 
   createCard() {
@@ -56,7 +26,7 @@ export default class Card {
     image.alt = this._name;
 
     image.addEventListener("click", () => {
-      this._openPopupPreview();
+      this._openPopupPreview(image);
     });
 
     this._item

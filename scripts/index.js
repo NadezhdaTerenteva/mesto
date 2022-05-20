@@ -45,7 +45,7 @@ const buttonEdit = document.querySelector(".profile__edit-button");
 const popups = document.querySelectorAll(".popup");
 const popupProfile = document.getElementById("popup-profile");
 const popupPlace = document.getElementById("popup-place");
-//const popupPreview = document.getElementById("popup-preview");
+const popupPreview = document.getElementById("popup-preview");
 
 const buttonAdd = document.querySelector(".profile__add-button");
 
@@ -61,12 +61,21 @@ const linkInput = formPlaceElement.querySelector("#link");
 const profileTitle = document.querySelector(".profile__title");
 const profileSubTitle = document.querySelector(".profile__subtitle");
 
-//const imagePreviewTitle = popupPreview.querySelector(".popup__photo-preview-title");
-//const imagePreview = popupPreview.querySelector(".popup__photo-preview-img");
+const openPopupPreview = function (item) {
+  const imagePreview = popupPreview.querySelector(".popup__photo-preview-img");
+  const imagePreviewTitle = popupPreview.querySelector(
+    ".popup__photo-preview-title"
+  );
+
+  imagePreviewTitle.textContent = item.name;
+  imagePreview.src = item.link;
+  imagePreview.alt = item.name;
+  showPopup(popupPreview);
+};
 
 function render() {
   const html = initialCards.map((item) => {
-    const card = new Card(item.name, item.link, template);
+    const card = new Card(item.name, item.link, template, openPopupPreview);
     return card.createCard();
   });
   listContainer.prepend(...html);
@@ -80,7 +89,12 @@ function handleAddCard(evt) {
     link: linkInput.value,
   };
 
-  const card = new Card(placeInput.value, linkInput.value, template);
+  const card = new Card(
+    placeInput.value,
+    linkInput.value,
+    template,
+    openPopupPreview
+  );
   const newNode = card.createCard(newPlace);
   listContainer.prepend(newNode);
 

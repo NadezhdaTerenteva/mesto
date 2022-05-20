@@ -7,6 +7,7 @@ There is also an interactive part, realised on JS, namely:
 - the possibility to edit user's profile and save data;
 - to add/remove new cards;
 - to like favorite places.
+Object-oriented programming approach is applied to JS code. 
 
 Current site is made responsive for mobile and desktop versions, coding based on desktop-first approach.
 Files are structured according **Nested BEM**, that allowes to reuse blocks on other projects.

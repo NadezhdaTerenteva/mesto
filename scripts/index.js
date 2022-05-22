@@ -37,6 +37,8 @@ const config = {
   errorClass: "popup__error-visible",
 };
 
+const formValidators = {};
+
 const listContainer = document.querySelector(".photo-grid__items");
 const template = document.querySelector(".card__item");
 
@@ -61,23 +63,25 @@ const linkInput = formPlaceElement.querySelector("#link");
 const profileTitle = document.querySelector(".profile__title");
 const profileSubTitle = document.querySelector(".profile__subtitle");
 
-const openPopupPreview = function (item) {
-  const imagePreview = popupPreview.querySelector(".popup__photo-preview-img");
-  const imagePreviewTitle = popupPreview.querySelector(
-    ".popup__photo-preview-title"
-  );
+const imagePreview = popupPreview.querySelector(".popup__photo-preview-img");
+const imagePreviewTitle = popupPreview.querySelector(
+  ".popup__photo-preview-title"
+);
 
-  imagePreviewTitle.textContent = item.name;
-  imagePreview.src = item.link;
-  imagePreview.alt = item.name;
+const handleCardClick = function (name, link) {
+  imagePreview.src = link;
+  imagePreviewTitle.textContent = name;
+  imagePreview.alt = name;
   showPopup(popupPreview);
 };
 
+function createCard(item) {
+  const card = new Card(item.name, item.link, template, handleCardClick);
+  return card.createCard();
+}
+
 function render() {
-  const html = initialCards.map((item) => {
-    const card = new Card(item.name, item.link, template, openPopupPreview);
-    return card.createCard();
-  });
+  const html = initialCards.map(createCard);
   listContainer.prepend(...html);
 }
 
@@ -89,20 +93,10 @@ function handleAddCard(evt) {
     link: linkInput.value,
   };
 
-  const card = new Card(
-    placeInput.value,
-    linkInput.value,
-    template,
-    openPopupPreview
-  );
-  const newNode = card.createCard(newPlace);
+  const newNode = createCard(newPlace);
   listContainer.prepend(newNode);
 
-  const button = popupPlace.querySelector(".popup__submit-button");
-
-  evt.target.reset();
-  button.disabled = true;
-  button.classList.add("popup__submit-button_disabled");
+  formValidators["place-data"].formValidationReset();
 
   closePopup(popupPlace);
 }
@@ -162,8 +156,18 @@ buttonAdd.addEventListener("click", openPopupPlace);
 formUserElement.addEventListener("submit", handleProfileFormSubmit);
 formPlaceElement.addEventListener("submit", handleAddCard);
 
-const cardFormValidator = new FormValidator(config, formPlaceElement);
-cardFormValidator.enableValidation();
+// Включение валидации
+const enableValidation = (config) => {
+  const formList = Array.from(document.querySelectorAll(config.formSelector));
+  formList.forEach((formElement) => {
+    const validator = new FormValidator(config, formElement);
+    // получаем данные из атрибута `name` у формы
+    const formName = formElement.getAttribute("name");
 
-const editFormValidator = new FormValidator(config, formUserElement);
-editFormValidator.enableValidation();
+    // вот тут в объект записываем под именем формы
+    formValidators[formName] = validator;
+    validator.enableValidation();
+  });
+};
+
+enableValidation(config);

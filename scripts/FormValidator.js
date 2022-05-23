@@ -18,11 +18,10 @@ export default class FormValidator {
     );
   }
 
-  formValidationReset() {
+  resetValidation() {
     this._form.reset();
 
-    this._button.disabled = true;
-    this._button.classList.add("popup__submit-button_disabled");
+    this._toggleButton();
   }
 
   _setEventListeners() {

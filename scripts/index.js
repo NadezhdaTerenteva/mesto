@@ -96,7 +96,7 @@ function handleAddCard(evt) {
   const newNode = createCard(newPlace);
   listContainer.prepend(newNode);
 
-  formValidators["place-data"].formValidationReset();
+  formValidators["place-data"].resetValidation();
 
   closePopup(popupPlace);
 }

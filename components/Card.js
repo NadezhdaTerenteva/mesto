@@ -7,6 +7,20 @@ export default class Card {
     this._handleCardClick = handleCardClick;
   }
 
+  createCard() {
+    this._item = this._template.content.cloneNode(true);
+    this._item.querySelector(".photo-grid__item-name").textContent = this._name;
+
+    const image = this._item.querySelector(".photo-grid__item-img");
+
+    image.src = this._link;
+    image.alt = this._name;
+
+    this._setEventListeners();
+
+    return this._item;
+  }
+
   _handleRemoveCard(evt) {
     const card = evt.target.closest(".photo-grid__item");
     card.remove();
@@ -34,19 +48,5 @@ export default class Card {
       .addEventListener("click", () => {
         this._handleCardClick(this._name, this._link);
       });
-  }
-
-  createCard() {
-    this._item = this._template.content.cloneNode(true);
-    this._item.querySelector(".photo-grid__item-name").textContent = this._name;
-
-    const image = this._item.querySelector(".photo-grid__item-img");
-
-    image.src = this._link;
-    image.alt = this._name;
-
-    this._setEventListeners();
-
-    return this._item;
   }
 }

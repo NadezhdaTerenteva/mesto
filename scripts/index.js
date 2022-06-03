@@ -4,77 +4,39 @@ import FormValidator from "../components/FormValidator.js";
 import PopupWithImage from "../components/PopupWithImage.js";
 import PopupWithForm from "../components/PopupWithForm.js";
 import UserInfo from "../components/UserInfo.js";
+import { initialCards, listContainerSelector, config, formValidators, template } from "../utils/constants.js";
 
-const initialCards = [
-  {
-    name: "Архыз",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg",
-  },
-  {
-    name: "Челябинская область",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg",
-  },
-  {
-    name: "Иваново",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg",
-  },
-  {
-    name: "Камчатка",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg",
-  },
-  {
-    name: "Холмогорский район",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg",
-  },
-  {
-    name: "Байкал",
-    link: "https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg",
-  },
-];
-
-const listContainerSelector = '.photo-grid__items';
-
-const popupSelector = '.popup';
-
-
-const config = {
-  formSelector: ".popup__form",
-  inputSelector: ".popup__input",
-  submitButtonSelector: ".popup__submit-button",
-  inactiveButtonClass: "popup__submit-button_disabled",
-  inputErrorClass: "popup__input_type-error",
-  errorClass: "popup__error-visible",
-};
-
-const formValidators = {};
-
-const template = document.querySelector(".card__item");
 
 const buttonEdit = document.querySelector(".profile__edit-button");
 
-const popups = document.querySelectorAll(".popup");
+//const popups = document.querySelectorAll(".popup");
 //const popupProfile = document.getElementById("popup-profile");
 //const popupPlace = document.getElementById("popup-place");
-const popupPreview = document.getElementById("popup-preview");
+//const popupPreview = document.getElementById("popup-preview");
 
 const buttonAdd = document.querySelector(".profile__add-button");
 
-const formUserElement = document.querySelector("#user-data-form");
-const formPlaceElement = document.querySelector("#place-data-form");
+// const formUserElement = document.querySelector("#user-data-form");
+// const formPlaceElement = document.querySelector("#place-data-form");
 
-export const nameInput = formUserElement.querySelector("#name");
-export const jobInput = formUserElement.querySelector("#job");
+// export const nameInput = formUserElement.querySelector("#name");
+// export const jobInput = formUserElement.querySelector("#job");
 
-const placeInput = formPlaceElement.querySelector("#place");
-const linkInput = formPlaceElement.querySelector("#link");
+// const placeInput = formPlaceElement.querySelector("#place");
+// const linkInput = formPlaceElement.querySelector("#link");
 
-const profileTitle = document.querySelector(".profile__title");
-const profileSubTitle = document.querySelector(".profile__subtitle");
+// const profileTitle = document.querySelector(".profile__title");
+// const profileSubTitle = document.querySelector(".profile__subtitle");
 
 //
 
 const popupPreviewImage = new PopupWithImage('#popup-preview');
 popupPreviewImage.setEventListeners();
+
+const userData = new UserInfo({
+  titleSelector: '.profile__title',
+  subtitleSelector: '.profile__subtitle'
+});
 
 const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({name: name, link:link})
@@ -93,66 +55,55 @@ const cardList = new Section({
  // отрисовка карточек
  cardList.renderItems();
 
-const popupPlace = new PopupWithForm({
+const popupPlace = new PopupWithForm(
   // создаём экземпляр попапа
+  {
   popupSelector: '#popup-place',
-  handleFormSubmit: (formData) => {
+   handleFormSubmit: (formData) => {
   // объект, который мы передадим при вызове handleFormSubmit
   // окажется на месте параметра formData
-    const card = new Card(formData, template, handleCardClick);
-    const cardElement = card.createCard();
 
+    const card = new Card(formData.place, formData.link, template, handleCardClick);
+    const cardElement = card.createCard();
     cardList.addItem(cardElement);
+
+    formValidators["place-data"].resetValidation();
+
+    popupPlace.closePopup();
     }
-  }
-);
+  });
 
 popupPlace.setEventListeners();
 
-const popupProfile = new PopupWithForm({
+
+const popupProfile = new PopupWithForm(
   // создаём экземпляр попапа
+  {
   popupSelector: '#popup-profile',
   handleFormSubmit: (formData) => {
     // объект, который мы передадим при вызове handleFormSubmit
     // окажется на месте параметра formData
-      const userData = new UserInfo();
+    userData.setUserInfo({name: formData.name, job:formData.job});
+
+    popupProfile.closePopup();
   }
 });
 
 popupProfile.setEventListeners();
 
 
-function handleAddCard(evt) {
-  evt.preventDefault();
+buttonEdit.addEventListener("click", (evt) =>{
 
-  const newPlace = {
-    name: placeInput.value,
-    link: linkInput.value,
-  };
+  const userInfo = userData.getUserInfo();
+  popupProfile.setInputValues(userInfo);
+  popupProfile.openPopup(evt);
 
-  const newNode = createCard(newPlace);
-  listContainer.prepend(newNode);
+});
 
-  formValidators["place-data"].resetValidation();
-
-  closePopup(popupPlace);
-}
-
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-
-  profileTitle.textContent = nameInput.value;
-  profileSubTitle.textContent = jobInput.value;
-
-  closePopup(popupProfile);
-}
-
-
-buttonEdit.addEventListener("click", (evt) => popupProfile.openPopup(evt));
 buttonAdd.addEventListener("click", (evt) => popupPlace.openPopup(evt));
 
-formUserElement.addEventListener("submit", handleProfileFormSubmit);
-formPlaceElement.addEventListener("submit", handleAddCard);
+// formUserElement.addEventListener("submit", handleProfileFormSubmit);
+// formPlaceElement.addEventListener("submit", handleAddCard);
 
 // Включение валидации
 const enableValidation = (config) => {

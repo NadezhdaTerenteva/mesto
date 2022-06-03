@@ -25,6 +25,19 @@ export const initialCards = [
   },
 ];
 
-export const listContainerSelector = '.photo-grid__items';
+export const listContainerSelector = ".photo-grid__items";
 
-export const popupSelector = '.popup';
+export const popupSelector = ".popup";
+
+export const config = {
+  formSelector: ".popup__form",
+  inputSelector: ".popup__input",
+  submitButtonSelector: ".popup__submit-button",
+  inactiveButtonClass: "popup__submit-button_disabled",
+  inputErrorClass: "popup__input_type-error",
+  errorClass: "popup__error-visible",
+};
+
+export const formValidators = {};
+
+export const template = document.querySelector(".card__item");

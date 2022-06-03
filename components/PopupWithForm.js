@@ -1,14 +1,14 @@
 import Popup from "./Popup.js";
 
 export default class PopupWithForm extends Popup {
-  constructor({popupSelector, handleFormSubmit}) {
+  constructor({ popupSelector, handleFormSubmit }) {
     super(popupSelector);
+    this._form = this._popup.querySelector(".popup__form");
     this._handleFormSubmit = handleFormSubmit;
+    this._inputList = this._form.querySelectorAll(".popup__input");
   }
 
   _getInputValues() {
-    this._inputList = document.querySelectorAll(".popup__input");
-
     this._formValues = {};
     this._inputList.forEach(
       (input) => (this._formValues[input.name] = input.value)
@@ -17,21 +17,22 @@ export default class PopupWithForm extends Popup {
     return this._formValues;
   }
 
+  setInputValues(initialdata) {
+    this._inputList.forEach((input) => {
+      if (initialdata.hasOwnProperty(input.name)) {
+        input.value = initialdata[input.name];
+      }
+    });
+  }
+
   setEventListeners() {
-    // this._popup.querySelector("#place-data-form")
-    // .addEventListener("submit", (evt) => {
-    //   this._handleAddCard(evt);
-    // });
+    this._form.addEventListener("submit", (evt) => {
+      evt.preventDefault();
+      this._handleFormSubmit(this._getInputValues());
 
-    this._popup
-      .querySelector(".popup__form")
-      .addEventListener("submit", (evt) => {
-        evt.preventDefault();
-        this._handleFormSubmit(this._getInputValues());
-
-        this._popup.reset();
-        this.closePopup();
-      });
+      this._form.reset();
+      this.closePopup();
+    });
 
     super.setEventListeners();
   }
@@ -40,5 +41,4 @@ export default class PopupWithForm extends Popup {
     this._popup.querySelector("#place-data-form").resetValidation();
     super.closePopup();
   }
-
 }

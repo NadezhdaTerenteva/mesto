@@ -41,3 +41,7 @@ export const config = {
 export const formValidators = {};
 
 export const template = document.querySelector(".card__item");
+
+export const buttonEdit = document.querySelector(".profile__edit-button");
+
+export const buttonAdd = document.querySelector(".profile__add-button");

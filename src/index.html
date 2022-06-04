@@ -3,18 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="stylesheet" href="./pages/index.css">
+
   <title>Место</title>
 </head>
 <body class="body">
   <div class="page">
     <header class="header">
-      <img src="./images/logo.svg" alt="Лого" class="header__logo">
+      <img src="<%=require('./images/logo.svg')%>" alt="Лого" class="header__logo">
     </header>
 
     <main class="content">
       <section class="profile">
-        <img src="./images/avatar.jpg" alt='Имя пользователя' class="profile__avatar">
+        <img src="<%=require('./images/avatar.jpg')%>" alt='Имя пользователя' class="profile__avatar">
         <div class="profile__info">
             <h1 class="profile__title">Жак-Ив Кусто</h1>
             <p class="profile__subtitle">Исследователь океана</p>
@@ -96,7 +96,7 @@
   <div class="popup" id="popup-preview">
     <div class="popup__photo-preview">
       <button class="popup__close-button" type="button"></button>
-      <img src="./images/altai_aleksandr-shemetillo--EWU60lOeys-unsplash.jpg" alt="Фото" class="popup__photo-preview-img">
+      <img src="<%=require('./images/altai_aleksandr-shemetillo--EWU60lOeys-unsplash.jpg')%>" alt="Фото" class="popup__photo-preview-img">
       <h2 class="popup__photo-preview-title"></h2>
     </div>
   </div>
@@ -104,7 +104,7 @@
   <template class="card__item">
     <li class="photo-grid__item">
       <button type="button" class="photo-grid__remove-button"></button>
-      <img src="./images/altai_aleksandr-shemetillo--EWU60lOeys-unsplash.jpg" alt="Алтай" class="photo-grid__item-img">
+      <img src="<%=require('./images/altai_aleksandr-shemetillo--EWU60lOeys-unsplash.jpg')%>" alt="Алтай" class="photo-grid__item-img">
       <div class="photo-grid__item-title">
           <h2 class="photo-grid__item-name"></h2>
           <button type="button" class="photo-grid__item-like-icon"></button>
@@ -112,6 +112,6 @@
     </li>
   </template>
 
-  <script src="../src/pages/index.js" type="module"></script>
+  <!--script src="../src/pages/index.js" type="module"></script-->
  </body>
 </html>

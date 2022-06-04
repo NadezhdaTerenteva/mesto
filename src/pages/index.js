@@ -28,6 +28,7 @@ const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({ name: name, link: link });
 };
 
+
 const cardList = new Section(
   {
     items: initialCards,

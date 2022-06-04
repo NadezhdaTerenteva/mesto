@@ -38,7 +38,7 @@ export default class PopupWithForm extends Popup {
   }
 
   close() {
-    this._popup.querySelector("#place-data-form").resetValidation();
+    this._form.resetValidation();
     super.closePopup();
   }
 }

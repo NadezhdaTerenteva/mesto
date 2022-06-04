@@ -3,7 +3,6 @@ export default class Card {
     this._name = name;
     this._link = link;
     this._template = template;
-    this._popupPreview = document.getElementById("popup-preview");
     this._handleCardClick = handleCardClick;
   }
 

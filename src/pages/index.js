@@ -28,15 +28,17 @@ const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({ name: name, link: link });
 };
 
+function createNewCard(name, link) {
+  const card = new Card(name, link, template, handleCardClick);
+  return card.createCard();
+}
 
 const cardList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-      const card = new Card(item.name, item.link, template, handleCardClick);
-      const cardElement = card.createCard();
 
-      cardList.addItem(cardElement);
+      cardList.addItem(createNewCard(item.name, item.link));
     },
   },
   listContainerSelector
@@ -53,14 +55,7 @@ const popupPlace = new PopupWithForm(
       // объект, который мы передадим при вызове handleFormSubmit
       // окажется на месте параметра formData
 
-      const card = new Card(
-        formData.place,
-        formData.link,
-        template,
-        handleCardClick
-      );
-      const cardElement = card.createCard();
-      cardList.addItem(cardElement);
+      cardList.addItem(createNewCard(formData.place, formData.link));
 
       formValidators["place-data"].resetValidation();
 

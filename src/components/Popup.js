@@ -1,31 +1,36 @@
+import { formValidators } from "../utils/constants";
+
 export default class Popup {
   constructor(popupSelector) {
 
     this._popup = document.querySelector(popupSelector);
     this._popupCloseButton = document.querySelector(".popup__close-button");
+    this._form = this._popup.querySelector(".popup__form");
+    this._handleEscClose = this._handleEscClose.bind(this);
+
   }
 
   openPopup() {
     this._popup.classList.add("popup_opened");
-    document.addEventListener("keydown", (evt) => this._handleEscClose(evt));
+    document.addEventListener("keydown", this._handleEscClose);
+
+    
   }
 
   closePopup() {
     this._popup.classList.remove("popup_opened");
-    document.removeEventListener("keydown", (evt) => this._handleEscClose(evt));
+    document.removeEventListener("keydown", this._handleEscClose);
+
+    this._form.reset();
   }
 
   _handleEscClose(evt) {
     if (evt.key === "Escape") {
-      const openedPopup = document.querySelector(".popup_opened");
-      this.closePopup(openedPopup);
+      this.closePopup();
     }
   }
 
   setEventListeners() {
-    // this._popupCloseButton.addEventListener("click", (evt) => {
-    //   this.closePopup(evt);
-    // });
 
     this._popup.addEventListener("mousedown", (evt) => {
       if (evt.target.classList.contains("popup_opened")) {

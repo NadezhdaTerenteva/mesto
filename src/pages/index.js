@@ -37,7 +37,6 @@ const cardList = new Section(
   {
     items: initialCards,
     renderer: (item) => {
-
       cardList.addItem(createNewCard(item.name, item.link));
     },
   },
@@ -46,49 +45,6 @@ const cardList = new Section(
 
 // отрисовка карточек
 cardList.renderItems();
-
-const popupPlace = new PopupWithForm(
-  // создаём экземпляр попапа
-  {
-    popupSelector: "#popup-place",
-    handleFormSubmit: (formData) => {
-      // объект, который мы передадим при вызове handleFormSubmit
-      // окажется на месте параметра formData
-
-      cardList.addItem(createNewCard(formData.place, formData.link));
-
-      formValidators["place-data"].resetValidation();
-
-      popupPlace.closePopup();
-    },
-  }
-);
-
-popupPlace.setEventListeners();
-
-const popupProfile = new PopupWithForm(
-  // создаём экземпляр попапа
-  {
-    popupSelector: "#popup-profile",
-    handleFormSubmit: (formData) => {
-      // объект, который мы передадим при вызове handleFormSubmit
-      // окажется на месте параметра formData
-      userData.setUserInfo({ name: formData.name, job: formData.job });
-
-      popupProfile.closePopup();
-    },
-  }
-);
-
-popupProfile.setEventListeners();
-
-buttonEdit.addEventListener("click", (evt) => {
-  const userInfo = userData.getUserInfo();
-  popupProfile.setInputValues(userInfo);
-  popupProfile.openPopup(evt);
-});
-
-buttonAdd.addEventListener("click", (evt) => popupPlace.openPopup(evt));
 
 // Включение валидации
 const enableValidation = (config) => {
@@ -105,3 +61,48 @@ const enableValidation = (config) => {
 };
 
 enableValidation(config);
+
+const popupPlace = new PopupWithForm(
+  // создаём экземпляр попапа
+  {
+    popupSelector: "#popup-place",
+    handleFormSubmit: (formData) => {
+      // объект, который мы передадим при вызове handleFormSubmit
+      // окажется на месте параметра formData
+
+      cardList.addItem(createNewCard(formData.place, formData.link));
+
+      //formValidators["place-data"].resetValidation();
+
+      popupPlace.closePopup();
+    },
+    formValidators: formValidators,
+  }
+);
+
+popupPlace.setEventListeners();
+
+const popupProfile = new PopupWithForm(
+  // создаём экземпляр попапа
+  {
+    popupSelector: "#popup-profile",
+    handleFormSubmit: (formData) => {
+      // объект, который мы передадим при вызове handleFormSubmit
+      // окажется на месте параметра formData
+      userData.setUserInfo({ name: formData.name, job: formData.job });
+
+      popupProfile.closePopup();
+    },
+    formValidators: formValidators,
+  }
+);
+
+popupProfile.setEventListeners();
+
+buttonEdit.addEventListener("click", (evt) => {
+  const userInfo = userData.getUserInfo();
+  popupProfile.setInputValues(userInfo);
+  popupProfile.openPopup(evt);
+});
+
+buttonAdd.addEventListener("click", (evt) => popupPlace.openPopup(evt));

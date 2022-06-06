@@ -7,13 +7,7 @@ export default class PopupWithForm extends Popup {
     this._handleFormSubmit = handleFormSubmit;
     this._inputList = this._form.querySelectorAll(".popup__input");
     this._formValidators = formValidators;
-  }
-
-  openPopup() {
-    const validator = this._formValidators[this._form.getAttribute("name")];
-    validator.resetValidation();
-
-    super.openPopup();
+    this._validator = this._formValidators[this._form.getAttribute("name")];
   }
 
   _getInputValues() {
@@ -46,5 +40,9 @@ export default class PopupWithForm extends Popup {
 
   closePopup() {
     super.closePopup();
+
+    if (this._validator) {
+      this._validator.resetValidation();
+    }
   }
 }

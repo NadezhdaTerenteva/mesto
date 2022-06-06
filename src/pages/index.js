@@ -72,8 +72,6 @@ const popupPlace = new PopupWithForm(
 
       cardList.addItem(createNewCard(formData.place, formData.link));
 
-      //formValidators["place-data"].resetValidation();
-
       popupPlace.closePopup();
     },
     formValidators: formValidators,

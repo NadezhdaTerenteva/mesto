@@ -1,7 +1,9 @@
 export default class Card {
-  constructor(name, link, template, handleCardClick) {
-    this._name = name;
-    this._link = link;
+  constructor({obj, template, handleCardClick, handleCardDelete}) {
+    this._name = obj.name;
+    this._link = obj.link;
+    this._id = obj._id;
+    this._removable = obj.removable;
     this._template = template;
     this._handleCardClick = handleCardClick;
   }
@@ -15,9 +17,17 @@ export default class Card {
     image.src = this._link;
     image.alt = this._name;
 
+    if (this._removable === false) {
+        const buttonRemove = this._item.querySelector(".photo-grid__remove-button").classList.add("photo-grid__remove-button_hidden")
+    }
+
     this._setEventListeners();
 
     return this._item;
+  }
+
+  getCardId(obj) {
+    return obj._id;
   }
 
   _handleRemoveCard(evt) {

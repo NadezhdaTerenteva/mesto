@@ -20,8 +20,10 @@
 @import url(../blocks/photo-grid/__item-img/photo-grid__item-img.css);
 @import url(../blocks/photo-grid/__item-title/photo-grid__item-title.css);
 @import url(../blocks/photo-grid/__item-name/photo-grid__item-name.css);
+@import url(../blocks/photo-grid/__item-likes-container/photo-grid__item-likes-container.css);
 @import url(../blocks/photo-grid/__item-like-icon/photo-grid__item-like-icon.css);
 @import url(../blocks/photo-grid/__item-like-icon/_active/photo-grid__item-like-icon_active.css);
+@import url(../blocks/photo-grid/__item-like-counter/photo-grid__item-like-counter.css);
 @import url(../blocks/footer/footer.css);
 @import url(../blocks/footer/__copyright/footer__copyright.css);
 @import url(../blocks/popup/popup.css);

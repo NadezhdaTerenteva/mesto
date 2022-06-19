@@ -24,30 +24,35 @@ const api = new Api(
   "62e0023b-a686-42d6-8d26-ce435f692769"
 );
 
+const userData = new UserInfo({
+  titleSelector: ".profile__title",
+  subtitleSelector: ".profile__subtitle",
+});
+
+const cardList = new Section(
+  {
+    items: [],
+    renderer: (obj) => {
+
+      cardList.addItem(createNewCard(obj));
+    },
+  },
+  listContainerSelector
+);
+
+  // отрисовка карточек
+  cardList.renderItems();
+
 api.getUserInfo().then((userInfo) => {
-  const userData = new UserInfo({
-    titleSelector: ".profile__title",
-    subtitleSelector: ".profile__subtitle",
-  });
 
   userData.setUserInfo(userInfo);
 
   api
     .getCards()
     .then((cards) => {
-      const cardList = new Section(
-        {
-          items: cards,
-          renderer: (obj) => {
-            obj.removable = obj.owner._id === userData.getUserInfo().id;
-            cardList.addItem(createNewCard(obj));
-          },
-        },
-        listContainerSelector
-      );
-
-      // отрисовка карточек
-      cardList.renderItems();
+      cards.forEach(card => {
+        cardList.addItem(createNewCard(card));
+      })
     })
 
     .catch((err) => {
@@ -65,17 +70,18 @@ const popupPlace = new PopupWithForm(
       api
         .addCard(formData)
         .then((obj) => {
-          const cardList = new Section(
-            {
-              items: [],
-              renderer: (obj) => {
-                obj.removable = true;
-                cardList.addItem(createNewCard(obj));
-              },
-            },
-            listContainerSelector
-          );
-          cardList.renderItems();
+          // const cardList = new Section(
+          //   {
+          //     items: [],
+          //     renderer: (obj) => {
+          //       obj.removable = true;
+          //       cardList.addItem(createNewCard(obj));
+          //     },
+          //   },
+          //   listContainerSelector
+          // );
+          // cardList.renderItems();
+          cardList.addItem(createNewCard(obj));
         })
         .catch((err) => {
           console.log(err);
@@ -96,33 +102,63 @@ const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({ name: name, link: link });
 };
 
-//Удаление карточки
 
-const card = new Card({
-  obj: obj,
-  template: template,
-  handleCardClick: handleCardClick,
-  handleCardDelete: (cardId) => {
-    const popupConfirmation = new PopupWithConfirmation("#popup-confirm");
+const popupConfirmation = new PopupWithConfirmation("#popup-confirm");
+popupConfirmation.setEventListeners();
 
-    popupConfirmation.openPopup();
-    popupConfirmation.setEventListeners();
 
-    popupConfirmation.setSubmitAction(() => {
-      api
-        .deleteCard(cardId)
-        .then((obj) => {
-          card._handleRemoveCard();
-        })
+
+//Создание и Удаление карточки, Лайки
+function createNewCard(obj) {
+
+  const userId = userData.getUserInfo().id;
+
+  obj.removable = obj.owner._id === userData.getUserInfo().id;
+
+  const likeByUser = obj.likes.filter(item => item._id === userId).length > 0;
+
+  //obj = {_id, owner:{}, likes:[{owner}]}
+  const card = new Card({
+    obj: obj,
+    template: template,
+    handleCardClick: handleCardClick,
+    handleCardDelete: (cardId, delBtnEvt) => {
+
+
+      popupConfirmation.setSubmitAction(() => {
+        api
+          .deleteCard(cardId)
+          .then((obj) => {
+            card.handleRemoveCard(delBtnEvt);
+          })
+          .catch((err) => {
+            console.log(err);
+          });
+      });
+
+      popupConfirmation.openPopup();
+
+    },
+
+    handleCardLike: (cardId) => {
+
+      if (card.getIsLiked()) {
+        api.deleteLikes(cardId)
+        .then((newCardData) => card.setLikesCounter(newCardData.likes.length))
         .catch((err) => {
           console.log(err);
         });
-    });
-  },
-});
+      } else {
+        api.setLikes(cardId)
+        .then((newCardData) => card.setLikesCounter(newCardData.likes.length))
+        .catch((err) => {
+          console.log(err);
+        });
+      }
+    },
 
-function createNewCard(obj) {
-  const card = new Card(obj, template, handleCardClick);
+    likeByUser: likeByUser,
+  });
   return card.createCard();
 }
 

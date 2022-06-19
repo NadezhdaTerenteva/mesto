@@ -105,7 +105,7 @@
     <div class="popup__content">
       <button class="popup__close-button" type="button"></button>
       <h3 class="popup__header">Вы уверены?</h3>
-      <button class="popup__submit-button" id="confirm-button" type="submit">Да</button>
+      <button class="popup__submit-button" id="confirm-button" type="button">Да</button>
     </div>
   </div>
 
@@ -115,7 +115,10 @@
       <img src="<%=require('./images/altai_aleksandr-shemetillo--EWU60lOeys-unsplash.jpg')%>" alt="Алтай" class="photo-grid__item-img">
       <div class="photo-grid__item-title">
           <h2 class="photo-grid__item-name"></h2>
-          <button type="button" class="photo-grid__item-like-icon"></button>
+          <div class="photo-grid__item-likes-container">
+            <button type="button" class="photo-grid__item-like-icon"></button>
+            <h4 class="photo-grid__item-like-counter"></h4>
+        </div>
       </div>
     </li>
   </template>

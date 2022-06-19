@@ -7,9 +7,9 @@ export default class PopupWithConfirmation extends Popup {
   }
 
   setSubmitAction(callback) {
-    this._confirmButton.addEventListener("submit", (evt) => {
+    this._confirmButton.addEventListener("click", (evt) => {
       evt.preventDefault();
-      handleCardDelete();
+      callback();
 
       this.closePopup();
     });

@@ -1,7 +1,7 @@
 .photo-grid__item-name {
   max-width: 210px;
   margin: 0;
-  padding: 0;
+  padding: 2px 0 0 0;
   font-style: normal;
   font-weight: 900;
   font-size: 24px;

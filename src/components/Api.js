@@ -19,7 +19,7 @@ export default class Api {
     });
   }
 
- setUserInfo() {
+ setUserInfo(userData) {
   return fetch("https://nomoreparties.co/v1/cohort-43/users/me", {
     method: "PATCH",
     headers: {
@@ -27,8 +27,26 @@ export default class Api {
       Authorization: "62e0023b-a686-42d6-8d26-ce435f692769",
     },
     body: JSON.stringify({
-      name: 'Marie Skłodowska Curie',
-      about: 'Physicist and Chemist'
+      name: userData.name,
+      about: userData.about,
+    })
+  }).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject("Error");
+  });
+ }
+
+ changeUserAvatar(userData) {
+  return fetch("https://nomoreparties.co/v1/cohort-43/users/me/avatar", {
+    method: "PATCH",
+    headers: {
+      "Content-type": "application/json",
+      Authorization: "62e0023b-a686-42d6-8d26-ce435f692769",
+    },
+    body: JSON.stringify({
+      avatar: userData.avatar,
     })
   }).then((res) => {
     if (res.ok) {

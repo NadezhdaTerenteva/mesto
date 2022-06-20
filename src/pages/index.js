@@ -10,13 +10,13 @@ import PopupWithConfirmation from "../components/PopupWithConfirmation";
 import Api from "../components/Api";
 
 import {
-  initialCards,
   listContainerSelector,
   config,
   formValidators,
   template,
   buttonEdit,
   buttonAdd,
+  buttonAvatarEdit,
 } from "../utils/constants.js";
 
 const api = new Api(
@@ -27,6 +27,7 @@ const api = new Api(
 const userData = new UserInfo({
   titleSelector: ".profile__title",
   subtitleSelector: ".profile__subtitle",
+  avatarSelector: ".profile__avatar",
 });
 
 const cardList = new Section(
@@ -101,7 +102,6 @@ popupPreviewImage.setEventListeners();
 const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({ name: name, link: link });
 };
-
 
 const popupConfirmation = new PopupWithConfirmation("#popup-confirm");
 popupConfirmation.setEventListeners();
@@ -185,7 +185,13 @@ const popupProfile = new PopupWithForm(
     handleFormSubmit: (formData) => {
       // объект, который мы передадим при вызове handleFormSubmit
       // окажется на месте параметра formData
-      userData.setUserInfo({ name: formData.name, job: formData.job });
+      api.setUserInfo(formData)
+      .then((userNewData) => {
+        userData.setUserInfo(userNewData);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
 
       popupProfile.closePopup();
     },
@@ -195,6 +201,30 @@ const popupProfile = new PopupWithForm(
 
 popupProfile.setEventListeners();
 
+const popupAvatar = new PopupWithForm(
+
+  {
+    popupSelector: "#popup-avatar",
+    handleFormSubmit: (avatarData) => {
+      // объект, который мы передадим при вызове handleFormSubmit
+      // окажется на месте параметра formData
+      api.changeUserAvatar(avatarData)
+      .then((userNewAvatar) => {
+        userData.setUserInfo(userNewAvatar.avatar);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
+      popupAvatar.closePopup();
+    },
+    formValidators: formValidators,
+
+  }
+);
+
+popupAvatar.setEventListeners();
+
 buttonEdit.addEventListener("click", (evt) => {
   const userInfo = userData.getUserInfo();
   popupProfile.setInputValues(userInfo);
@@ -202,3 +232,5 @@ buttonEdit.addEventListener("click", (evt) => {
 });
 
 buttonAdd.addEventListener("click", (evt) => popupPlace.openPopup(evt));
+
+buttonAvatarEdit.addEventListener("click", (evt) => popupAvatar.openPopup(evt));

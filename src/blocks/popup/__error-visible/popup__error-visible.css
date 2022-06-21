@@ -13,6 +13,6 @@
   border: none;
 }
 
-.popup__error-visible:last-of-type {
+.popup__error-visible:nth-of-type(2) {
   top: 89px;
 }

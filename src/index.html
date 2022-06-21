@@ -14,7 +14,9 @@
 
     <main class="content">
       <section class="profile">
-        <img src="<%=require('./images/avatar.jpg')%>" alt='Имя пользователя' class="profile__avatar" name="avatar">
+        <div class="profile__avatar-cover">
+          <img src="<%=require('./images/avatar.jpg')%>" alt='Имя пользователя' class="profile__avatar" name="avatar">
+        </div>
         <div class="profile__info">
             <h1 class="profile__title" name="name"></h1>
             <p class="profile__subtitle" name="about"></p>
@@ -122,7 +124,7 @@
   <div class="popup" id="popup-confirm">
     <div class="popup__content">
       <button class="popup__close-button" type="button"></button>
-      <h3 class="popup__header">Вы уверены?</h3>
+      <h3 class="popup__header popup__header_confirm">Вы уверены?</h3>
       <button class="popup__submit-button" id="confirm-button" type="button">Да</button>
     </div>
   </div>

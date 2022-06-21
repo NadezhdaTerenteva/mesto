@@ -34,61 +34,72 @@ const cardList = new Section(
   {
     items: [],
     renderer: (obj) => {
-
       cardList.addItem(createNewCard(obj));
     },
   },
   listContainerSelector
 );
 
-  // отрисовка карточек
-  cardList.renderItems();
+// отрисовка карточек
+cardList.renderItems();
 
-api.getUserInfo().then((userInfo) => {
+//PromiseAll получаем данные пользователя, получаем карточки
 
-  userData.setUserInfo(userInfo);
+Promise.all([api.getUserInfo(),api.getCards()])
+  .then(([userInfo, cards]) => {
+    userData.setUserInfo(userInfo);
 
-  api
-    .getCards()
-    .then((cards) => {
-      cards.forEach(card => {
-        cardList.addItem(createNewCard(card));
-      })
-    })
-
-    .catch((err) => {
-      console.log(err);
+    cards.forEach((card) => {
+      cardList.addItem(createNewCard(card));
     });
-});
+  })
+  .catch((err) => {
+    console.log(err);
+  });
 
+// api.getUserInfo()
+// .then((userInfo) => {
+//   userData.setUserInfo(userInfo);
+
+//   api.getCards()
+//     .then((cards) => {
+//       cards.forEach((card) => {
+//         cardList.addItem(createNewCard(card));
+//       });
+//     })
+//     .catch((err) => {
+//       console.log(err);
+//     });
+// });
+
+// Попап Preview
+const popupPreviewImage = new PopupWithImage("#popup-preview");
+popupPreviewImage.setEventListeners();
+
+
+// Попап Confirmation
+const popupConfirmation = new PopupWithConfirmation("#popup-confirm");
+popupConfirmation.setEventListeners();
+
+
+//Попап добавления карточки
 const popupPlace = new PopupWithForm(
-  // создаём экземпляр попапа
   {
     popupSelector: "#popup-place",
     handleFormSubmit: (formData) => {
-      // объект, который мы передадим при вызове handleFormSubmit
-      // окажется на месте параметра formData
+      popupPlace.changeButtonText("Сохранение...");
       api
         .addCard(formData)
         .then((obj) => {
-          // const cardList = new Section(
-          //   {
-          //     items: [],
-          //     renderer: (obj) => {
-          //       obj.removable = true;
-          //       cardList.addItem(createNewCard(obj));
-          //     },
-          //   },
-          //   listContainerSelector
-          // );
-          // cardList.renderItems();
           cardList.addItem(createNewCard(obj));
         })
         .catch((err) => {
           console.log(err);
+        })
+        .finally(() => {
+          popupPlace.changeButtonText("Создать");
         });
     },
-
     formValidators: formValidators,
   }
 );
@@ -96,35 +107,25 @@ const popupPlace = new PopupWithForm(
 popupPlace.closePopup();
 popupPlace.setEventListeners();
 
-const popupPreviewImage = new PopupWithImage("#popup-preview");
-popupPreviewImage.setEventListeners();
 
 const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({ name: name, link: link });
 };
 
-const popupConfirmation = new PopupWithConfirmation("#popup-confirm");
-popupConfirmation.setEventListeners();
-
-
 
 //Создание и Удаление карточки, Лайки
 function createNewCard(obj) {
-
   const userId = userData.getUserInfo().id;
 
   obj.removable = obj.owner._id === userData.getUserInfo().id;
 
-  const likeByUser = obj.likes.filter(item => item._id === userId).length > 0;
+  const likeByUser = obj.likes.filter((item) => item._id === userId).length > 0;
 
-  //obj = {_id, owner:{}, likes:[{owner}]}
   const card = new Card({
     obj: obj,
     template: template,
     handleCardClick: handleCardClick,
     handleCardDelete: (cardId, delBtnEvt) => {
-
-
       popupConfirmation.setSubmitAction(() => {
         api
           .deleteCard(cardId)
@@ -137,30 +138,77 @@ function createNewCard(obj) {
       });
 
       popupConfirmation.openPopup();
-
     },
-
     handleCardLike: (cardId) => {
-
       if (card.getIsLiked()) {
-        api.deleteLikes(cardId)
-        .then((newCardData) => card.setLikesCounter(newCardData.likes.length))
-        .catch((err) => {
-          console.log(err);
-        });
+        api
+          .deleteLikes(cardId)
+          .then((newCardData) => card.setLikesCounter(newCardData.likes.length))
+          .catch((err) => {
+            console.log(err);
+          });
       } else {
-        api.setLikes(cardId)
-        .then((newCardData) => card.setLikesCounter(newCardData.likes.length))
-        .catch((err) => {
-          console.log(err);
-        });
+        api
+          .setLikes(cardId)
+          .then((newCardData) => card.setLikesCounter(newCardData.likes.length))
+          .catch((err) => {
+            console.log(err);
+          });
       }
     },
-
     likeByUser: likeByUser,
   });
+
   return card.createCard();
 }
+
+
+// Попап обновления профиля
+const popupProfile = new PopupWithForm(
+  {
+    popupSelector: "#popup-profile",
+    handleFormSubmit: (formData) => {
+      popupProfile.changeButtonText("Сохранение...");
+      api.setUserInfo(formData)
+        .then((userNewData) => {
+          userData.setUserInfo(userNewData);
+        })
+        .then(() => popupProfile.closePopup())
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          popupProfile.changeButtonText("Сохранить");
+        });
+    },
+    formValidators: formValidators,
+  }
+);
+popupProfile.setEventListeners();
+
+
+// Попап обновления аватара
+const popupAvatar = new PopupWithForm({
+  popupSelector: "#popup-avatar",
+  handleFormSubmit: (avatarData) => {
+    popupAvatar.changeButtonText("Сохранение...");
+    api.changeUserAvatar(avatarData)
+      .then((userNewAvatar) => {
+        userData.setUserInfo(userNewAvatar.avatar);
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        popupAvatar.changeButtonText("Сохранить");
+      });
+
+    popupAvatar.closePopup();
+  },
+  formValidators: formValidators,
+});
+popupAvatar.setEventListeners();
+
 
 // Включение валидации
 const enableValidation = (config) => {
@@ -178,53 +226,8 @@ const enableValidation = (config) => {
 
 enableValidation(config);
 
-const popupProfile = new PopupWithForm(
-  // создаём экземпляр попапа
-  {
-    popupSelector: "#popup-profile",
-    handleFormSubmit: (formData) => {
-      // объект, который мы передадим при вызове handleFormSubmit
-      // окажется на месте параметра formData
-      api.setUserInfo(formData)
-      .then((userNewData) => {
-        userData.setUserInfo(userNewData);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
 
-      popupProfile.closePopup();
-    },
-    formValidators: formValidators,
-  }
-);
-
-popupProfile.setEventListeners();
-
-const popupAvatar = new PopupWithForm(
-
-  {
-    popupSelector: "#popup-avatar",
-    handleFormSubmit: (avatarData) => {
-      // объект, который мы передадим при вызове handleFormSubmit
-      // окажется на месте параметра formData
-      api.changeUserAvatar(avatarData)
-      .then((userNewAvatar) => {
-        userData.setUserInfo(userNewAvatar.avatar);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-
-      popupAvatar.closePopup();
-    },
-    formValidators: formValidators,
-
-  }
-);
-
-popupAvatar.setEventListeners();
-
+// Слушатели на кнопки
 buttonEdit.addEventListener("click", (evt) => {
   const userInfo = userData.getUserInfo();
   popupProfile.setInputValues(userInfo);

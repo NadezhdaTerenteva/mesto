@@ -46,5 +46,5 @@ export const buttonEdit = document.querySelector(".profile__edit-button");
 
 export const buttonAdd = document.querySelector(".profile__add-button");
 
-export const buttonAvatarEdit = document.querySelector(".profile__avatar");
+export const buttonAvatarEdit = document.querySelector(".profile__avatar-cover");
 

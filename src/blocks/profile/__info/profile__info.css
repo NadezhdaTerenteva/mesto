@@ -1,5 +1,6 @@
 .profile__info {
   max-width: 336px;
+  margin-left: 30px;
   color: #ffffff;
   display: grid;
   grid-template-columns: 1fr 24px;

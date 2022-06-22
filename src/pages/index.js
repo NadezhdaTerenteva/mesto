@@ -45,7 +45,7 @@ cardList.renderItems();
 
 //PromiseAll получаем данные пользователя, получаем карточки
 
-Promise.all([api.getUserInfo(),api.getCards()])
+Promise.all([api.getUserInfo(), api.getCards()])
   .then(([userInfo, cards]) => {
     userData.setUserInfo(userInfo);
 
@@ -57,61 +57,40 @@ Promise.all([api.getUserInfo(),api.getCards()])
     console.log(err);
   });
 
-// api.getUserInfo()
-// .then((userInfo) => {
-//   userData.setUserInfo(userInfo);
-
-//   api.getCards()
-//     .then((cards) => {
-//       cards.forEach((card) => {
-//         cardList.addItem(createNewCard(card));
-//       });
-//     })
-//     .catch((err) => {
-//       console.log(err);
-//     });
-// });
-
 // Попап Preview
 const popupPreviewImage = new PopupWithImage("#popup-preview");
 popupPreviewImage.setEventListeners();
-
 
 // Попап Confirmation
 const popupConfirmation = new PopupWithConfirmation("#popup-confirm");
 popupConfirmation.setEventListeners();
 
-
 //Попап добавления карточки
-const popupPlace = new PopupWithForm(
-  {
-    popupSelector: "#popup-place",
-    handleFormSubmit: (formData) => {
-      popupPlace.changeButtonText("Сохранение...");
-      api
-        .addCard(formData)
-        .then((obj) => {
-          cardList.addItem(createNewCard(obj));
-        })
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          popupPlace.changeButtonText("Создать");
-        });
-    },
-    formValidators: formValidators,
-  }
-);
+const popupPlace = new PopupWithForm({
+  popupSelector: "#popup-place",
+  handleFormSubmit: (formData) => {
+    popupPlace.changeButtonText("Сохранение...");
+    api
+      .addCard(formData)
+      .then((obj) => {
+        cardList.addItem(createNewCard(obj));
+      })
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        popupPlace.changeButtonText("Создать");
+      });
+  },
+  formValidators: formValidators,
+});
 
 popupPlace.closePopup();
 popupPlace.setEventListeners();
 
-
 const handleCardClick = function (name, link) {
   popupPreviewImage.openPopup({ name: name, link: link });
 };
-
 
 //Создание и Удаление карточки, Лайки
 function createNewCard(obj) {
@@ -162,37 +141,35 @@ function createNewCard(obj) {
   return card.createCard();
 }
 
-
 // Попап обновления профиля
-const popupProfile = new PopupWithForm(
-  {
-    popupSelector: "#popup-profile",
-    handleFormSubmit: (formData) => {
-      popupProfile.changeButtonText("Сохранение...");
-      api.setUserInfo(formData)
-        .then((userNewData) => {
-          userData.setUserInfo(userNewData);
-        })
-        .then(() => popupProfile.closePopup())
-        .catch((err) => {
-          console.log(err);
-        })
-        .finally(() => {
-          popupProfile.changeButtonText("Сохранить");
-        });
-    },
-    formValidators: formValidators,
-  }
-);
+const popupProfile = new PopupWithForm({
+  popupSelector: "#popup-profile",
+  handleFormSubmit: (formData) => {
+    popupProfile.changeButtonText("Сохранение...");
+    api
+      .setUserInfo(formData)
+      .then((userNewData) => {
+        userData.setUserInfo(userNewData);
+      })
+      .then(() => popupProfile.closePopup())
+      .catch((err) => {
+        console.log(err);
+      })
+      .finally(() => {
+        popupProfile.changeButtonText("Сохранить");
+      });
+  },
+  formValidators: formValidators,
+});
 popupProfile.setEventListeners();
-
 
 // Попап обновления аватара
 const popupAvatar = new PopupWithForm({
   popupSelector: "#popup-avatar",
   handleFormSubmit: (avatarData) => {
     popupAvatar.changeButtonText("Сохранение...");
-    api.changeUserAvatar(avatarData)
+    api
+      .changeUserAvatar(avatarData)
       .then((userNewAvatar) => {
         userData.setUserInfo(userNewAvatar.avatar);
       })
@@ -209,7 +186,6 @@ const popupAvatar = new PopupWithForm({
 });
 popupAvatar.setEventListeners();
 
-
 // Включение валидации
 const enableValidation = (config) => {
   const formList = Array.from(document.querySelectorAll(config.formSelector));
@@ -225,7 +201,6 @@ const enableValidation = (config) => {
 };
 
 enableValidation(config);
-
 
 // Слушатели на кнопки
 buttonEdit.addEventListener("click", (evt) => {

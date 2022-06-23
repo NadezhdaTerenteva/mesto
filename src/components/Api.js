@@ -8,16 +8,18 @@ export default class Api {
     };
   }
 
+  _checkResult(res) {
+    if (res.ok) {
+      return res.json();
+    }
+    return Promise.reject("Error");
+  }
+
   getUserInfo() {
     return fetch("https://nomoreparties.co/v1/cohort-43/users/me", {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then(this._checkResult);
   }
 
   setUserInfo(userData) {
@@ -28,12 +30,7 @@ export default class Api {
         name: userData.name,
         about: userData.about,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then(this._checkResult);
   }
 
   changeUserAvatar(userData) {
@@ -43,24 +40,14 @@ export default class Api {
       body: JSON.stringify({
         avatar: userData.avatar,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then(this._checkResult);
   }
 
   getCards() {
     return fetch("https://mesto.nomoreparties.co/v1/cohort-43/cards", {
       method: "GET",
       headers: this._headers,
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+    }).then(this._checkResult);
   }
 
   addCard(obj) {
@@ -75,13 +62,7 @@ export default class Api {
         name: obj.place,
         link: obj.link,
       }),
-    }).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject("Error");
-    });
+    }).then(this._checkResult);
   }
 
   deleteCard(cardId) {
@@ -93,14 +74,7 @@ export default class Api {
         body: JSON.stringify({
           _id: cardId,
         }),
-      }
-    ).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-
-      return Promise.reject("Error");
-    });
+      }).then(this._checkResult);
   }
 
   setLikes(cardId, likes) {
@@ -113,13 +87,7 @@ export default class Api {
           _id: cardId,
           likes: [],
         }),
-      }
-    ).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+      }).then(this._checkResult);
   }
 
   deleteLikes(cardId) {
@@ -131,12 +99,6 @@ export default class Api {
         body: JSON.stringify({
           _id: cardId,
         }),
-      }
-    ).then((res) => {
-      if (res.ok) {
-        return res.json();
-      }
-      return Promise.reject("Error");
-    });
+      }).then(this._checkResult);
   }
 }

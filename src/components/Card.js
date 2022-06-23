@@ -20,7 +20,7 @@ export default class Card {
   }
 
   createCard() {
-    this._item = this._template.content.cloneNode(true);
+    this._item = this._template.content.querySelector('.photo-grid__item').cloneNode(true);
     this._item.querySelector(".photo-grid__item-name").textContent = this._name;
     this._counterElement = this._item.querySelector(
       ".photo-grid__item-like-counter"
@@ -53,9 +53,9 @@ export default class Card {
     return obj._id;
   }
 
-  handleRemoveCard(evt) {
-    const card = evt.target.closest(".photo-grid__item");
-    card.remove();
+  handleRemoveCard() {
+    this._item.remove();
+    this._item = null;
   }
 
   _likeImage(evt) {

@@ -74,6 +74,7 @@ const popupPlace = new PopupWithForm({
       .addCard(formData)
       .then((obj) => {
         cardList.addItem(createNewCard(obj));
+        popupPlace.closePopup();
       })
       .catch((err) => {
         console.log(err);
@@ -85,7 +86,6 @@ const popupPlace = new PopupWithForm({
   formValidators: formValidators,
 });
 
-popupPlace.closePopup();
 popupPlace.setEventListeners();
 
 const handleCardClick = function (name, link) {
@@ -94,9 +94,9 @@ const handleCardClick = function (name, link) {
 
 //Создание и Удаление карточки, Лайки
 function createNewCard(obj) {
-  const userId = userData.getUserInfo().id;
+  const userId = userData.getUserId();
 
-  obj.removable = obj.owner._id === userData.getUserInfo().id;
+  obj.removable = obj.owner._id === userId; //userData.getUserInfo().id;
 
   const likeByUser = obj.likes.filter((item) => item._id === userId).length > 0;
 
@@ -150,6 +150,7 @@ const popupProfile = new PopupWithForm({
       .setUserInfo(formData)
       .then((userNewData) => {
         userData.setUserInfo(userNewData);
+        popupProfile.closePopup();
       })
       .then(() => popupProfile.closePopup())
       .catch((err) => {
@@ -172,6 +173,7 @@ const popupAvatar = new PopupWithForm({
       .changeUserAvatar(avatarData)
       .then((userNewAvatar) => {
         userData.setUserInfo(userNewAvatar.avatar);
+        popupAvatar.closePopup();
       })
       .catch((err) => {
         console.log(err);
@@ -209,6 +211,9 @@ buttonEdit.addEventListener("click", (evt) => {
   popupProfile.openPopup(evt);
 });
 
-buttonAdd.addEventListener("click", (evt) => popupPlace.openPopup(evt));
+buttonAdd.addEventListener("click", (evt) => {
+  popupPlace.resetForm();
+  popupPlace.openPopup(evt);
+});
 
 buttonAvatarEdit.addEventListener("click", (evt) => popupAvatar.openPopup(evt));

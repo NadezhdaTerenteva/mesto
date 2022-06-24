@@ -50,7 +50,7 @@ Promise.all([api.getUserInfo(), api.getCards()])
     userData.setUserInfo(userInfo);
 
     cards.forEach((card) => {
-      cardList.addItem(createNewCard(card));
+      cardList.addItem(createNewCard(card), 'end');
     });
   })
   .catch((err) => {
@@ -73,7 +73,7 @@ const popupPlace = new PopupWithForm({
     api
       .addCard(formData)
       .then((obj) => {
-        cardList.addItem(createNewCard(obj));
+        cardList.addItem(createNewCard(obj), 'start');
         popupPlace.closePopup();
       })
       .catch((err) => {

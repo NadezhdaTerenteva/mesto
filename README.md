@@ -20,4 +20,3 @@ Files are structured according **Nested BEM**, that allowes to reuse blocks on o
 Design draft can be seen under the links in **Figma**
 * [Link in Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
 
-Find online version under the [link](https://nadezhdaterenteva.github.io/mesto/)
